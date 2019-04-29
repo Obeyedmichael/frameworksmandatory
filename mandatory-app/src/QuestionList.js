@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import PostQuestion from './PostQuestion'
 
 class QuestionList extends Component {
 
@@ -12,12 +13,15 @@ class QuestionList extends Component {
             </li>)
         });
 
+
+
         return (
             <div>
                 <h3>{this.props.header}</h3>
                 <ul>
                     {list}
                 </ul>
+                <PostQuestion addQuestions={this.props.addQuestions}/>
             </div>
         );
     }

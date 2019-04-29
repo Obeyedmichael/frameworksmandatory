@@ -43,7 +43,7 @@ db.once('open', function() {
 
 let answerSchema = new mongoose.Schema(
     {
-        username: String,
+
         answer: String,
         vote: Number,
     }
@@ -53,7 +53,6 @@ let questionSchema = new mongoose.Schema(
     {
         title: String,
         body: String,
-        author: String,
         answers: [answerSchema]
     }
 );
@@ -66,11 +65,11 @@ function getFromId(id) {
     return Question.find((elm) => elm.id === Number(id));
 }
 
-function findNextId() {
+/*function findNextId() {
     const reducer = (acc, curr) => Math.max(acc, curr);
     let nextId = Question.map(el => el.id).reduce(reducer) + 1;
     return nextId;
-}
+}*/
 
 /**** Routes ****/
 /*
@@ -81,7 +80,7 @@ app.get('/*', (req, res) => {
 });
  */
 
-app.get('/api/questions/', (req, res) => {
+app.get('/api/questions', (req, res) => {
     res.json(Question)
 });
 
@@ -90,10 +89,21 @@ app.get('/api/questions/:id/', (req, res) => {
 });
 
 app.post('/api/questions', (req, res) => {
-    let newQuestion = req.body;
-    newQuestion.id = findNextId();
-    Question.push(newQuestion);
+    let newQuestion = new Question({
+        title: req.body.title,
+        body: req.body.body
+    });
+
+    newQuestion.save(function(error,Question){
+        if(error){
+            return console.log(error);
+        }
+        else{
+            console.log("yay",Question);
+        }
+    });
     res.json({ msg: `You new question is posted`, Question: questionSchema});
+    res.send()
 });
 
 app.get('/api/answers/', (req, res) => {

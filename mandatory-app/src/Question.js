@@ -23,7 +23,7 @@ class Question extends Component {
 
 
                 <p>
-                    Answers:
+                    answers:
                     <ul>
                         {list}
                     </ul>

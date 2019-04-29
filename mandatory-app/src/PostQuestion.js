@@ -5,22 +5,31 @@ export default class PostQuestion extends Component {
         super(props);
 
         this.state = {
-            input: ""
+            questionsTitle: "",
+            questionsBody: ""
         };
 
-        this.onChange = this.onChange.bind(this);
+        this.onChangeTitle = this.onChangeTitle.bind(this);
+        this.onChangeBody = this.onChangeBody.bind(this);
         this.handleInput = this.handleInput.bind(this);
     }
 
-    onChange(event) {
+    onChangeTitle(event) {
         this.setState({
-            input: event.target.value
+            questionsTitle: event.target.value
+        });
+    }
+
+    onChangeBody(event) {
+        this.setState({
+            questionsBody: event.target.value
         });
     }
 
     handleInput(event) {
         event.preventDefault();
-        this.props.PostQuestion(this.state.input);
+        this.props.addQuestions(this.state.questionsTitle,this.state.questionsBody);
+
     }
 
     render() {
@@ -29,10 +38,15 @@ export default class PostQuestion extends Component {
                 <div className="card-body">
                     <form>
                         <div className="form-group">
-                            <label htmlFor="itemText">New question</label>
+
+                            <input type="text" className="form-control" id="itemTitle"
+                                   placeholder="Title"
+                                   onChange={this.onChangeTitle}
+                            />
+
                             <input type="text" className="form-control" id="itemText"
                                    placeholder="What to aks"
-                                   onChange={this.onChange}
+                                   onChange={this.onChangeBody}
                             />
                         </div>
                         <button onClick={this.handleInput}
