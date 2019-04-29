@@ -1,4 +1,6 @@
 /**** External libraries ****/
+
+
 const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -33,7 +35,7 @@ app.use((req, res, next) => {
 });
 
 let mongoose = require('mongoose');
-mongoose.connect('mongodb://dbuser:aa12t@cluster1-44tla.azure.mongodb.net/test?retryWrites=true', {useNewUrlParser: true});
+mongoose.connect('mongodb+srv://dbuser:aa12t@cluster1-44tla.azure.mongodb.net/test?retryWrites=true', {useNewUrlParser: true});
 
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -61,31 +63,23 @@ let Question = mongoose.model('Question', questionSchema);
 let Answers = mongoose.model('Answer',answerSchema);
 
 
-function getFromId(id) {
+/*function getFromId(id) {
     return Question.find((elm) => elm.id === Number(id));
-}
-
-/*function findNextId() {
-    const reducer = (acc, curr) => Math.max(acc, curr);
-    let nextId = Question.map(el => el.id).reduce(reducer) + 1;
-    return nextId;
 }*/
 
 /**** Routes ****/
-/*
-/**** Reroute all unknown requests to the React index.html ****
 
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../build/index.html'));
-});
- */
 
 app.get('/api/questions', (req, res) => {
-    res.json(Question)
+    Question.find((er,docs)=> {res.send(docs)})
 });
 
 app.get('/api/questions/:id/', (req, res) => {
-    res.json(getFromId(req.params.id));
+
+    Question.findOne({_id: req.params.id}, (err, question) =>{
+        res.json(question)
+    })
+    //res.json(getFromId(req.params.id));
 });
 
 app.post('/api/questions', (req, res) => {
@@ -106,20 +100,36 @@ app.post('/api/questions', (req, res) => {
     res.send()
 });
 
-app.get('/api/answers/', (req, res) => {
-    res.json(Answers)
+app.post('/api/questions/answers/:id' ,(req, res) => {
+    let newAnswer = new Answers({
+        answers: req.body.answer,
+        vote: 0
+    });
+    Question.findOne({_id:req.params.id}, (err, Question) => {
+        if(err) {
+            console.log(err);
+        }
+        else{
+
+            Question.answers.push(newAnswer)
+            Question.save();
+        }
+    });
+
+    res.json({
+        msg: `You have posted this answer: ${req.body}`,
+        newAnswer: newAnswer});
+    res.send();
 });
 
-app.get('/api/answers/:id/', (req, res) => {
-    res.json(getFromId(req.params.id));
+
+app.put('/api/questions/:id/answers/:answerId', (req, res) => {
+    Question.findOne({ _id: req.params.id }).exec(function (err, question) {
+        question.answers.find((elem) => elem._id == req.params.answerId).vote = req.body.vote;
+        question.save();
+    })
 });
 
-app.post('/api/answers', (req, res) => {
-    let newAnswer = req.answer;
-    newAnswer.id = findNextId();
-    Answers.push(newAnswer);
-    res.json({ msg: `You new question is posted`, Answers: answerSchema});
-});
 
 
 /**** Start! ****/

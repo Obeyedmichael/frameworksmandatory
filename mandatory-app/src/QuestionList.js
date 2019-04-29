@@ -9,7 +9,7 @@ class QuestionList extends Component {
 
         this.props.questions.map((elm) => {
             list.push(<li>
-                <Link to={`/question/${elm.id}`}>{elm.title}</Link>
+                <Link to={`/questions/${elm._id}`}>{elm.title}</Link>
             </li>)
         });
 
