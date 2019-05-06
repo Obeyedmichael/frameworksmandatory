@@ -70,6 +70,10 @@ class App extends Component {
         return this.state.questions.find((elm) => elm._id === Number(id));
     }
 
+    /*getAnswerFromQuestionId(id){
+        return this.state.questions.answers, this.questions.find((elm) => elm._id === Number(id));
+    }*/
+
     addAnswer(answer, id) {
         let newAnswer = {
             answer: answer,
@@ -122,7 +126,8 @@ class App extends Component {
                     <Route exact path={'/questions/:id'}
                            render={(props) => <Question {...props}
                                                         question={this.getQuestionFromId(props.match.params._id)}
-                                                        addAnswer={this.addAnswer()}
+                                                        /*answers={this.getAnswerFromQuestionId(props.match.params._id)}*/
+                                                        addAnswer={this.addAnswer}
                                                         id={props.match.params.id}
                                                         />}
                     />

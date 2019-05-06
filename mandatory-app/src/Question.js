@@ -16,6 +16,8 @@ class Question extends Component
             answer: ""
         };
 
+
+
         fetch(`${this.API_URL}/questions/${props.match.params.id}`,
         {
             method:'GET',
@@ -38,7 +40,20 @@ class Question extends Component
     }
 
 
+
     render() {
+        let answercontent = "no answers";
+        if(this.state.question.answers)
+        {
+            let answercontent = this.state.question.answers;
+            {console.log(this.state.question.answers)}
+            answercontent =
+                <AnswerList
+                    answer={this.state.question.answers}
+                    id={this.props.id}
+                />
+        }
+
         let content = "LOADING";
         if(this.state.question)
         {
@@ -54,10 +69,10 @@ class Question extends Component
 
                     </div>
                     <div>
-                        <AnswerList
-                            answer={this.state.question.answers}
-                            id={this.props.id}
-                        />
+
+                        {answercontent}
+
+
                     </div>
                     <div>
                         <addAnswer
