@@ -20,8 +20,9 @@ class PostAnswer extends Component {
     }
     handleInput(event) {
         event.preventDefault();
-        this.props.onChangeAnswer(this.state.answer, this.props.id)
+        this.props.postAnswer(this.state.answer, this.props.id)
     }
+
 
     render() {
         return (

@@ -23,7 +23,7 @@ class App extends Component {
             answers:[]
         };
         this.addQuestions = this.addQuestions.bind(this);
-        this.addAnswer = this.addAnswer.bind(this);
+        this.postAnswer = this.postAnswer.bind(this);
     }
 
     componentDidMount() {
@@ -74,7 +74,7 @@ class App extends Component {
         return this.state.questions.answers, this.questions.find((elm) => elm._id === Number(id));
     }*/
 
-    addAnswer(answer, id) {
+    postAnswer(answer, id) {
         let newAnswer = {
             answer: answer,
             id: id
@@ -96,12 +96,12 @@ class App extends Component {
             })
             .then(()=>{
                 this.setState({
-                    answers:''
+                    answer:''
                 })
 
             });
         this.getData()
-            this.setState({
+        this.setState({
             answers: [...this.state.answers, newAnswer]
 
         });
@@ -125,9 +125,9 @@ class App extends Component {
 
                     <Route exact path={'/questions/:id'}
                            render={(props) => <Question {...props}
-                                                        question={this.getQuestionFromId(props.match.params._id)}
+                                                        question={this.getQuestionFromId(props.match.params.id)}
                                                         /*answers={this.getAnswerFromQuestionId(props.match.params._id)}*/
-                                                        addAnswer={this.addAnswer}
+                                                        postAnswer={this.postAnswer}
                                                         id={props.match.params.id}
                                                         />}
                     />

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Answer from "./Answer";
+import PostAnswer from "./PostAnswer";
 
 class AnswerList extends Component {
 
@@ -25,7 +26,7 @@ class AnswerList extends Component {
                 <h3>{this.props.header}</h3>
                 <div className="card">
                     <div className="card-header">
-                        The questions
+                        The Answers
                     </div>
                     <div className="card-body">
                         <ul className="list-group" id="itemList">

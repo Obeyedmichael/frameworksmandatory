@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {Link} from "react-router-dom";
 import QuestionList from "./QuestionList"
-import PostAnswer from "./PostAnswer"
+import PostAnswer from "./PostAnswer";
+import Answer from "./Answer";
 import PostQuestion from "./QuestionList";
 import AnswerList from "./Answerlist";
 
@@ -49,7 +50,7 @@ class Question extends Component
             {console.log(this.state.question.answers)}
             answercontent =
                 <AnswerList
-                    answer={this.state.question.answers}
+                    answers={this.state.question.answers}
                     id={this.props.id}
                 />
         }
@@ -63,22 +64,25 @@ class Question extends Component
                 <div>
                     <div>
                         <p className="q_title">Title: {question.title}</p>
-                        <p className="q_question">Question: {question.question}</p>
+                        <p className="q_question">Question: {question.body}</p>
                     </div>
-                    <div className="comments_list">
-
-                    </div>
-                    <div>
-
-                        {answercontent}
-
+                    <div className="answers_list">
 
                     </div>
                     <div>
-                        <addAnswer
-                            AddAnswers={this.props.addAnswer}
+                        <AnswerList
+                            answers={this.state.question.answers}
                             id={this.props.id}
                         />
+
+                        <PostAnswer
+                           postAnswers={this.props.postAnswer}
+                            id={this.props.id}
+                        />
+
+                    </div>
+                    <div>
+
                     </div>
                     <Link to={'/'}> Home</Link>
                 </div>
@@ -90,7 +94,10 @@ class Question extends Component
             </li>)
         });*/
 
-
+        /*<addAnswer
+                                    AddAnswers={this.props.addAnswer}
+                                    id={this.props.id}
+                                />*/
 
         return content;
 

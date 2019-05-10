@@ -47,7 +47,7 @@ let answerSchema = new mongoose.Schema(
     {
 
         answer: String,
-        vote: Number,
+        vote: Number
     }
 );
 
@@ -102,10 +102,20 @@ app.post('/api/questions', (req, res) => {
 
 app.post('/api/questions/answers/:id' ,(req, res) => {
     let newAnswer = new Answers({
-        answers: req.body.answer,
-        vote: 0
+        answer: req.body.answer,
+        vote: req.body.vote
     });
-    Question.findOne({_id:req.params.id}, (err, Question) => {
+
+    newAnswer.save()
+        .then(answer =>
+        Question.findByIdAndUpdate(req.params.id, {$push: {answers: newAnswer}}, {new: true})
+        )
+        .then((question) => {
+        res.json({msg: "answer psoted", question: question});
+})
+        .catch(err => console.log(err));
+});
+    /*Question.findOne({_id:req.params.id}, (err, Question) => {
         if(err) {
             console.log(err);
         }
@@ -113,6 +123,7 @@ app.post('/api/questions/answers/:id' ,(req, res) => {
 
             Question.answers.push(newAnswer)
             Question.save();
+
         }
     });
 
@@ -120,7 +131,7 @@ app.post('/api/questions/answers/:id' ,(req, res) => {
         msg: `You have posted this answer: ${req.body}`,
         newAnswer: newAnswer});
     res.send();
-});
+});*/
 
 
 app.put('/api/questions/:id/answers/:answerId', (req, res) => {
